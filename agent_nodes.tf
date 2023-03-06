@@ -61,7 +61,7 @@ locals {
       )))
     }
   }
-  kubectl_cmd = var.use_sudo ? "sudo kubectl" : "kubectl"
+  kubectl_cmd = var.use_sudo ? "sudo ${var.k3s_bin_dir}/kubectl" : "${var.k3s_bin_dir}/kubectl"
 }
 
 // Install k3s agent
@@ -113,7 +113,7 @@ resource "null_resource" "agents_install" {
   // Install k3s
   provisioner "remote-exec" {
     inline = [
-      "INSTALL_K3S_SELINUX_WARN=${var.k3s_selinux_warn} INSTALL_K3S_VERSION=${local.k3s_version} sh /tmp/k3s-installer agent ${local.agents_metadata[each.key].flags}",
+      "INSTALL_K3S_SELINUX_WARN=${var.k3s_selinux_warn} INSTALL_K3S_VERSION=${local.k3s_version} INSTALL_K3S_BIN_DIR=${var.k3s_bin_dir} sh /tmp/k3s-installer agent ${local.agents_metadata[each.key].flags}",
       "until systemctl is-active --quiet k3s-agent.service; do sleep 1; done"
     ]
   }

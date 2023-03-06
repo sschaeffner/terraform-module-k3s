@@ -207,8 +207,8 @@ resource "null_resource" "servers_install" {
   // Install k3s server
   provisioner "remote-exec" {
     inline = [
-      "INSTALL_K3S_SELINUX_WARN=${var.k3s_selinux_warn} INSTALL_K3S_VERSION=${local.k3s_version} sh /tmp/k3s-installer server ${local.servers_metadata[each.key].flags}",
-      "until bash -c ${local.kubectl_cmd} get node ${local.servers_metadata[each.key].name}; do sleep 1; done"
+      "INSTALL_K3S_SELINUX_WARN=${var.k3s_selinux_warn} INSTALL_K3S_VERSION=${local.k3s_version} INSTALL_K3S_BIN_DIR=${var.k3s_bin_dir} sh /tmp/k3s-installer server ${local.servers_metadata[each.key].flags}",
+      "until ${local.kubectl_cmd} get node ${local.servers_metadata[each.key].name}; do sleep 1; done"
     ]
   }
 }

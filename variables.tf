@@ -158,3 +158,9 @@ variable "use_sudo" {
   default     = false
   type        = bool
 }
+
+variable "k3s_bin_dir" {
+  description = "Directory to install k3s binary, links, and uninstall script to"
+  default     = "/usr/local/bin"
+  type        = string
+}
